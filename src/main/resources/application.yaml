@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ignite
+ignite:
+  cache-name: CITYCACHE
+  storage-path: /home/mdv/IdeaProjects/bd-hw2/storage
+server:
+  port: 8085
