@@ -33,6 +33,13 @@ public final class AppRandomUtils {
     }
 
     /**
+     * @return сгенерированный ключ
+     */
+    public static UUID generateKey() {
+        return UUID.randomUUID();
+    }
+
+    /**
      * @return признак наличия записи о возрасте и количестве заграничных поездок гражданина
      */
     public static Boolean abroadTripsNeeded() {

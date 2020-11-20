@@ -33,7 +33,6 @@ public class ComputeService {
         ArrayList<FieldsQueryCursor<List<?>>> currentResult = new ArrayList<>(igniteInstance.compute().broadcast(
                 () -> {
                     IgniteCache appCache = Ignition.localIgnite().cache(igniteAppProperties.getCacheName());
-                    System.out.println("fuck");
                     String sql = "SELECT t1.AGE, AVERAGENUMBERTRIPS, AVERAGESALARY FROM (SELECT AGE, AVG(ABROADTRIPCOUNT) " +
                             "AS AVERAGENUMBERTRIPS FROM CITIZENROWABROADTRIPS GROUP BY AGE) AS t1 INNER JOIN\n" +
                             "(SELECT AGE, AVG(SALARY) AS AVERAGESALARY FROM CITIZENROWABROADTRIPS AS a INNER JOIN CITIZENROWSALARY " +

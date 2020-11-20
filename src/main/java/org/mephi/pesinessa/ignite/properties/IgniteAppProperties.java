@@ -18,7 +18,15 @@ public class IgniteAppProperties {
      */
     private String storagePath;
     /**
-     * Интервал стриминга из Kafka в Ignite
+     * Путь до скрипта insert для таблиц кэша
      */
-    private Long streamerFlushFrequency;
+    private String sqlCreateScriptPath;
+    /**
+     * Путь до скрипта для очистки таблицы
+     */
+    private String sqlDeleteScriptPath;
+    /**
+     * Путь до sqlline.sh ignite
+     */
+    private String pathToSqlline;
 }

@@ -22,27 +22,24 @@ public class ProducerService {
 
     private final IgniteAppProperties igniteAppProperties;
 
-    public void createSqlScriptFile(Integer num) {
+    public void createScriptsFile(Integer num) {
 
-        try (FileWriter writer = new FileWriter("/home/mdv/IdeaProjects/bd-hw2/insert.sql", false)) {
-           // String initTables = "DROP TABLE IF EXISTS "+ igniteAppProperties.getCacheName()+".CITIZENROWABROADTRIPS;\n" +
-            //        "CREATE TABLE "+ igniteAppProperties.getCacheName()+".CITIZENROWABROADTRIPS (PASSPORTID UUID, AGE INTEGER, ABROADTRIPCOUNT INTEGER, " +
-            //        "PRIMARY KEY (PASSPORTID, ABROADTRIPCOUNT));\n" +
-           //         "DROP TABLE IF EXISTS \"+ igniteAppProperties.getCacheName()+\".CITIZENROWSALARY;\n" +
-           //         "CREATE TABLE "+ igniteAppProperties.getCacheName()+".CITIZENROWSALARY (PASSPORTID UUID, MONTH INTEGER, SALARY INTEGER," +
-           //         "PRIMARY KEY (PASSPORTID, SALARY));\n";
-                    //CITIZENROWSALARY (PASSPORTID, MONTH, SALARY)
-         //   writeSqlString(initTables, writer);
-            for (int i = 0; i < num; i++) {
-                UUID passportId = AppRandomUtils.generateRandomPassportId();
-                Set<Integer> monthList = AppRandomUtils.generateRandomMonthList();
-                monthList.forEach(month -> {
-                    String sqlInsert = createSqlInsertCitizenRowSalary(passportId,month);
-                    writeSqlString(sqlInsert,writer);
-                });
-                if (AppRandomUtils.abroadTripsNeeded()) {
-                    String sqlInsert = createSqlInsertCitizenRowAbroadTrips(passportId);
-                    writeSqlString(sqlInsert,writer);
+        try (FileWriter writerCreate = new FileWriter(igniteAppProperties.getSqlCreateScriptPath(), false)) {
+            try (FileWriter writerDelete = new FileWriter(igniteAppProperties.getSqlDeleteScriptPath(), false)) {
+
+                for (int i = 0; i < num; i++) {
+                    UUID passportId = AppRandomUtils.generateRandomPassportId();
+                    Set<Integer> monthList = AppRandomUtils.generateRandomMonthList();
+                    monthList.forEach(month -> {
+                        writeSqlString(createSqlInsertCitizenRowSalary(passportId, month,
+                                AppRandomUtils.generateKey()), writerCreate);
+                    });
+                    if (AppRandomUtils.abroadTripsNeeded()) {
+                        writeSqlString(createSqlInsertCitizenRowAbroadTrips(passportId,
+                                AppRandomUtils.generateKey()), writerCreate);
+                    }
+                    writeSqlString(createSqlDeleteCitizenRowSalary(), writerDelete);
+                    writeSqlString(createSqlDeleteCitizenRowAbroadTrips(), writerDelete);
                 }
             }
         } catch (IOException ex) {
@@ -72,11 +69,12 @@ public class ProducerService {
      *
      * @param passportId - паспорт гражданина
      * @param month      - месяц путешествия
+     * @param key        - ключ для вставки в таблицу
      * @return строка запроса
      */
-    private String createSqlInsertCitizenRowSalary(UUID passportId, Integer month) {
+    private String createSqlInsertCitizenRowSalary(UUID passportId, Integer month, UUID key) {
         CitizenRowSalary citizenRowSalary = AppRandomUtils.generateCitizenRowSalary(passportId, month);
-        String sqlInsert = "INSERT INTO CITIZENROWSALARY (PASSPORTID, MONTH, SALARY) VALUES ('" +
+        String sqlInsert = "INSERT INTO CITIZENROWSALARY (_KEY, PASSPORTID, MONTH, SALARY) VALUES ('" + key + "','" +
                 citizenRowSalary.getPassportId() + "'," + citizenRowSalary.getMonth() + "," +
                 citizenRowSalary.getSalary() + ");";
         return sqlInsert;
@@ -86,16 +84,35 @@ public class ProducerService {
      * Метод преобразования записи о гражданине с заплатой из объекта в String с sql запросом
      *
      * @param passportId - паспорт гражданина
+     * @param key        - ключ для вставки в таблицу
      * @return строка запроса
      */
-    private String createSqlInsertCitizenRowAbroadTrips(UUID passportId) {
+    private String createSqlInsertCitizenRowAbroadTrips(UUID passportId, UUID key) {
         CitizenRowAbroadTrips citizenRowAbroadTrips = AppRandomUtils.generateCitizenRowAbroadTrips(passportId);
-        String sqlInsert = "INSERT INTO CITIZENROWABROADTRIPS (PASSPORTID, AGE, ABROADTRIPCOUNT) VALUES ('" +
+        String sqlInsert = "INSERT INTO CITIZENROWABROADTRIPS (_KEY, PASSPORTID, AGE, ABROADTRIPCOUNT) VALUES ('" + key + "', '" +
                 citizenRowAbroadTrips.getPassportId() + "'," + citizenRowAbroadTrips.getAge() + "," +
                 citizenRowAbroadTrips.getAbroadTripCount() + ");";
         return sqlInsert;
     }
 
-    //"+ igniteAppProperties.getCacheName()+".
+    /**
+     * Метод преобразования записи о гражданине с заплатой из объекта в String с sql запросом
+     *
+     * @return строка запроса
+     */
+    private String createSqlDeleteCitizenRowSalary() {
+        String sqlDelete = "DELETE FROM CITIZENROWSALARY;";
+        return sqlDelete;
+    }
+
+    /**
+     * Метод преобразования записи о гражданине с заплатой из объекта в String с sql запросом
+     *
+     * @return строка запроса
+     */
+    private String createSqlDeleteCitizenRowAbroadTrips() {
+        String sqlDelete = "DELETE FROM CITIZENROWABROADTRIPS;";
+        return sqlDelete;
+    }
 
 }
