@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Spring boot main приложения
  */
 @SpringBootApplication
-public class KafkaIgniteApplication {
+public class IgniteApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KafkaIgniteApplication.class, args);
+        SpringApplication.run(IgniteApplication.class, args);
     }
 
 }
