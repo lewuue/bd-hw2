@@ -8,7 +8,7 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.mephi.pesinessa.ignite</groupId>
+    <groupId>ru.mephi.pesinessa.ignite</groupId>
     <artifactId>ignite</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ignite</name>
@@ -78,6 +78,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
