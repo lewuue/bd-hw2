@@ -1,4 +1,4 @@
-package ru.mephi.pesinessa.compute_ignite;
+package ru.mephi.pesinessa;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ignite.Ignite;
@@ -8,12 +8,12 @@ import org.apache.ignite.configuration.CacheConfiguration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.mephi.pesinessa.compute_ignite.data.CitizenRowAbroadTrips;
-import ru.mephi.pesinessa.compute_ignite.data.CitizenRowSalary;
-import ru.mephi.pesinessa.compute_ignite.data.StatisticRow;
-import ru.mephi.pesinessa.compute_ignite.properties.IgniteAppProperties;
-import ru.mephi.pesinessa.compute_ignite.service.ComputeService;
-import ru.mephi.pesinessa.compute_ignite.utils.AppRandomUtils;
+import ru.mephi.pesinessa.data.CitizenRowAbroadTrips;
+import ru.mephi.pesinessa.data.CitizenRowSalary;
+import ru.mephi.pesinessa.data.StatisticRow;
+import ru.mephi.pesinessa.properties.IgniteAppProperties;
+import ru.mephi.pesinessa.service.ComputeService;
+import ru.mephi.pesinessa.utils.AppRandomUtils;
 
 import java.util.*;
 

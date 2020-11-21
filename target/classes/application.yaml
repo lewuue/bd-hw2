@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: ignite
+ignite:
+  cache-name: CITYCACHE
+  storage-path: /Users/a17816836/IdeaProjects/bd-hw2/storage
+  sql-create-script-path: /Users/a17816836/IdeaProjects/bd-hw2/insert.sql
+  sql-delete-script-path: /Users/a17816836/IdeaProjects/bd-hw2/delete.sql
+  path-to-sqlline: /Users/a17816836/Downloads/apache-ignite-2.9.0-bin/bin
+server:
+  port: 8085
